@@ -451,10 +451,26 @@ impl Person {
 impl Ord for Person {
     fn cmp(&self, other: &Self) -> Ordering {
         self.name
-            .cmp(&other.name)
-            .then(self.given_name.cmp(&other.given_name))
-            .then(self.suffix.cmp(&other.suffix))
-            .then(self.prefix.cmp(&other.prefix))
+            .to_lowercase()
+            .cmp(&other.name.to_lowercase())
+            .then(
+                self.given_name
+                    .clone()
+                    .map(|v| v.to_lowercase())
+                    .cmp(&other.given_name.clone().map(|v| v.to_lowercase())),
+            )
+            .then(
+                self.suffix
+                    .clone()
+                    .map(|v| v.to_lowercase())
+                    .cmp(&other.suffix.clone().map(|v| v.to_lowercase())),
+            )
+            .then(
+                self.prefix
+                    .clone()
+                    .map(|v| v.to_lowercase())
+                    .cmp(&other.prefix.clone().map(|v| v.to_lowercase())),
+            )
     }
 }
 
