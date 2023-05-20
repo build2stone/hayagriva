@@ -418,7 +418,7 @@ impl Bibliography {
             let mut res = DisplayString::new();
             if let Some(date) = qurl.visit_date.as_ref() {
                 if database.is_none() && self.config.url_access_date.needs_date(entry) {
-                    res += &format!("accessed {}, ", format_date(date, DateMode::Day));
+                    res += &format!("abgerufen {}, ", format_date(date, DateMode::Day));
                 }
             }
 
@@ -444,7 +444,7 @@ impl Bibliography {
                 if let Some(date) = entry.url_any().and_then(|u| u.visit_date.as_ref()) {
                     push_comma_quote_aware(&mut brack_content.value, ';', true);
                     brack_content +=
-                        &format!("accessed {}", format_date(date, DateMode::Day));
+                        &format!("abgerufen {}", format_date(date, DateMode::Day));
                 }
             }
             if !brack_content.is_empty() {

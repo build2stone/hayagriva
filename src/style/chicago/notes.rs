@@ -521,7 +521,7 @@ impl<'a> ChicagoNotes<'a> {
                     if database.is_none() && self.config.url_access_date.needs_date(entry)
                     {
                         res +=
-                            &format!("accessed {}, ", format_date(date, DateMode::Day));
+                            &format!("abgerufen {}, ", format_date(date, DateMode::Day));
                     }
                 }
 
@@ -550,7 +550,7 @@ impl<'a> ChicagoNotes<'a> {
                     {
                         push_comma_quote_aware(&mut brack_content.value, ';', true);
                         brack_content +=
-                            &format!("accessed {}", format_date(date, DateMode::Day));
+                            &format!("abgerufen {}", format_date(date, DateMode::Day));
                     }
                 }
                 if !brack_content.is_empty() {

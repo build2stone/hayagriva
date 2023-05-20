@@ -241,7 +241,7 @@ impl Mla {
                 break;
             }
             if (index as i32) == name_len as i32 - 2 {
-                res += "and ";
+                res += "und ";
             }
         }
 
@@ -435,7 +435,7 @@ impl Mla {
             {
                 res.start_format(Formatting::Italic)
             } else if !sc {
-                res += "“"
+                res += "„"
             }
             res += &fmt;
             if !res.is_empty() && res.last() != Some('.') && use_quotes {
@@ -652,7 +652,7 @@ impl Mla {
 
                 if vdate {
                     supplemental.push(format!(
-                        "Accessed {}",
+                        "Abgerufen {}",
                         format_date(qurl.visit_date.as_ref().unwrap())
                     ));
                 }
@@ -723,7 +723,7 @@ impl Mla {
                         }
 
                         lc.optionals += &format!(
-                            "Accessed {}",
+                            "Abgerufen {}",
                             format_date(qurl.visit_date.as_ref().unwrap())
                         );
                     }
@@ -750,7 +750,7 @@ impl Mla {
                 let vdate = qurl.visit_date.is_some() && select!(Blog | Web | Misc | (!(*["date"])) | (* > (Blog | Web | Misc))).matches(entry);
                 if vdate {
                     nc.optionals = format!(
-                        "Accessed {}",
+                        "Abgerufen {}",
                         format_date(qurl.visit_date.as_ref().unwrap())
                     );
                 }

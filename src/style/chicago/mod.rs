@@ -240,7 +240,7 @@ pub(super) fn and_list_opt(
             res.push(' ');
         }
         if index + 2 == name_len && !(threshold > 0 && name_len >= threshold) {
-            res += "and ";
+            res += "und ";
         }
     }
 
@@ -370,7 +370,7 @@ pub(super) fn get_chunk_title(
     if sc {
         res.start_format(Formatting::Italic);
     } else if fmt {
-        res += "“";
+        res += "„";
     }
 
     let np = entry.entry_type == Newspaper;

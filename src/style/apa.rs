@@ -398,7 +398,7 @@ impl Apa {
                     match (date.month, date.day) {
                         (None, _) => {
                             let mut res = DisplayString::from_string(format!(
-                                "Retrieved {}, from ",
+                                "Abgerufen {}, von ",
                                 date.display_year()
                             ));
                             res.start_format(Formatting::Link(uv.into()));
@@ -408,7 +408,7 @@ impl Apa {
                         }
                         (Some(month), None) => {
                             let mut res = DisplayString::from_string(format!(
-                                "Retrieved {} {}, from ",
+                                "Abgerufen {} {}, von ",
                                 get_month_name(month).unwrap(),
                                 date.display_year(),
                             ));
@@ -419,7 +419,7 @@ impl Apa {
                         }
                         (Some(month), Some(day)) => {
                             let mut res = DisplayString::from_string(format!(
-                                "(Retrieved {} {}, {}, from ",
+                                "(Abgerufen {} {}, {}, von ",
                                 get_month_name(month).unwrap(),
                                 day,
                                 date.display_year(),

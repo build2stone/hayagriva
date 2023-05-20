@@ -480,18 +480,18 @@ pub const ALWAYS_CAPITALIZE: [&str; 426] = [
 /// Returns an error if month out of range.
 pub fn get_month_name(month: u8) -> Result<String, ()> {
     Ok(match month {
-        0 => "January",
-        1 => "February",
-        2 => "March",
+        0 => "Januar",
+        1 => "Februar",
+        2 => "März",
         3 => "April",
-        4 => "May",
-        5 => "June",
-        6 => "July",
+        4 => "Mai",
+        5 => "Juni",
+        6 => "Juli",
         7 => "August",
         8 => "September",
-        9 => "October",
+        9 => "Oktober",
         10 => "November",
-        11 => "December",
+        11 => "Dezember",
         _ => return Err(()),
     }
     .to_string())
@@ -503,16 +503,16 @@ pub fn get_month_abbr(month: u8, dot: bool) -> Result<String, ()> {
     let mut res = match month {
         0 => "Jan",
         1 => "Feb",
-        2 => "Mar",
+        2 => "Mär",
         3 => "Apr",
-        4 => "May",
+        4 => "Mai",
         5 => "Jun",
         6 => "Jul",
         7 => "Aug",
         8 => "Sep",
-        9 => "Oct",
+        9 => "Okt",
         10 => "Nov",
-        11 => "Dec",
+        11 => "Dez",
         _ => return Err(()),
     }
     .to_string();
@@ -527,10 +527,10 @@ pub fn get_month_abbr(month: u8, dot: bool) -> Result<String, ()> {
 pub fn get_ordinal(num: i64) -> String {
     let my = num.abs();
     let suffix = match my {
-        1 => "st",
-        2 => "nd",
-        3 => "rd",
-        _ => "th",
+        1 => "er",
+        2 => "er",
+        3 => "er",
+        _ => "er",
     };
 
     num.to_string() + suffix

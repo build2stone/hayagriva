@@ -100,7 +100,7 @@ impl Ieee {
                 res += ", ";
             }
             if (index as i32) == name_len as i32 - 2 {
-                res += "and ";
+                res += "und ";
             }
         }
 
@@ -235,7 +235,7 @@ impl Ieee {
                     res += &sentence;
                     res.push('.');
                 } else {
-                    res += "“";
+                    res += "„";
                     res += &sentence;
                     res += ",”";
                 }
@@ -329,7 +329,7 @@ impl Ieee {
 
             res.commit_formats();
         } else if let Some(title) = entry.title() {
-            res += "“";
+            res += "„";
             res += &title.canonical.format_sentence_case(&self.sentence_case);
             res += ",”";
         }
@@ -871,7 +871,7 @@ impl Ieee {
 
                 if canonical.entry_type != Web && canonical.entry_type != Blog {
                     if let Some(date) = &url.visit_date {
-                        res += &format!("Accessed: {}. ", format_date(&date, None));
+                        res += &format!("Abgerufen: {}. ", format_date(&date, None));
                     }
 
                     if canonical.entry_type == Video {
@@ -890,7 +890,7 @@ impl Ieee {
                     res.commit_formats();
 
                     if let Some(date) = &url.visit_date {
-                        res += &format!(" (accessed: {}).", format_date(&date, None));
+                        res += &format!(" (abgerufen: {}).", format_date(&date, None));
                     }
                 }
             }
