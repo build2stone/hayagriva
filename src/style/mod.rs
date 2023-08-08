@@ -365,11 +365,11 @@ impl Numerical {
     }
 }
 
-/// Specify the order in which numbers are verteilt.
+/// Specify the order in which numbers are assigned.
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum NumericalOrdering {
-    /// Numbers will be ordered by entries authors, then titles, and finally
+    /// Numbers will be ordered by entries' authors, then titles, and finally
     /// dates.
     ///
     /// Note that this only works if all entries were pushed into the database
@@ -556,7 +556,7 @@ pub enum Formatting {
     Link(String),
 }
 
-/// Will move a format range's indicies by `o`.
+/// Will move a format range's indices by `o`.
 fn offset_format_range(
     r: (std::ops::Range<usize>, Formatting),
     o: usize,
@@ -677,7 +677,7 @@ impl DisplayString {
         }
     }
 
-    /// Joins a number of display strings with a seperator in-between.
+    /// Joins a number of display strings with a separator in-between.
     pub fn join(items: &[Self], joiner: &str) -> Self {
         let mut res = DisplayString::new();
         for (i, e) in items.iter().enumerate() {
@@ -1145,7 +1145,7 @@ impl<'a> CitationStyle<'a> for Alphanumerical {
 #[non_exhaustive]
 pub struct AuthorTitle {
     /// This citation style uses code from Chicago, therefore the settings are
-    /// contined within this struct.
+    /// contained within this struct.
     pub config: ChicagoConfig,
 }
 
