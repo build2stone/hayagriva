@@ -143,7 +143,7 @@ impl Case for TitleCase {
 
         let word_indices: Vec<(usize, bool, usize, bool)> = word_indices
             .into_iter()
-            .zip(word_length.into_iter())
+            .zip(word_length)
             .map(|((ind, _, prio), (len, retain))| (ind, prio, len, retain))
             .collect();
 
@@ -163,7 +163,7 @@ impl Case for TitleCase {
                 if last_retain {
                     res.push(c)
                 } else {
-                    res.push_str(&c.to_lowercase().to_string());
+                    res.extend(c.to_lowercase());
                 }
                 insert_index += c.len_utf8();
             }
@@ -175,17 +175,17 @@ impl Case for TitleCase {
                 || (last && self.always_capitalize_last_word)
                 || len >= self.always_capitalize_min_len.unwrap_or(usize::MAX)
             {
-                res.push_str(&c.to_uppercase().to_string());
+                res.extend(c.to_uppercase());
             } else {
                 // Collect word to check it against the database
                 let word = &title[index..index + len].to_lowercase();
 
                 if self.use_exception_dictionary
-                    && en::NEVER_CAPITALIZE.binary_search(&word.as_str()).is_ok()
+                    && en::NEVER_CAPITALIZE.binary_search(&word.trim_end()).is_ok()
                 {
-                    res.push_str(&c.to_lowercase().to_string());
+                    res.extend(c.to_lowercase());
                 } else {
-                    res.push_str(&c.to_uppercase().to_string());
+                    res.extend(c.to_uppercase());
                 }
             }
 
@@ -194,12 +194,11 @@ impl Case for TitleCase {
 
         // Deplete iterator
         for c in iter {
-            if last_retain  {
-                res.push_str(&c.to_string());
+            if last_retain {
+                res.push(c);
+            } else {
+                res.extend(c.to_lowercase());
             }
-            else {            
-                res.push_str(&c.to_lowercase().to_string());
-            }        
         }
 
         res
@@ -241,7 +240,7 @@ impl Default for SentenceCase {
 }
 
 impl SentenceCase {
-    /// Construct TitleCaseProperties with the default values.
+    /// Construct a new `SentenceCase` with the default values.
     pub fn new() -> Self {
         Default::default()
     }
@@ -359,7 +358,7 @@ impl Case for SentenceCase {
 
         let word_indices: Vec<(usize, bool, bool, usize, CaseSituation)> = word_indices
             .into_iter()
-            .zip(word_length.into_iter())
+            .zip(word_length)
             .map(|((ind, _, upper, no_tf), (len, situation))| {
                 (ind, upper, no_tf, len, situation)
             })
@@ -370,6 +369,7 @@ impl Case for SentenceCase {
 
         let mut insert_index = 0;
         let mut last_retain = false;
+
         for (index, force_cap, no_transform, len, situation) in word_indices.into_iter() {
             while insert_index < index {
                 let c = iter.next().expect("title string terminates before word start");
@@ -388,15 +388,18 @@ impl Case for SentenceCase {
                         || self.capitalize_words_with_caps_inside))
                 && has_lowercase;
 
-            if force_cap
-                || ((situation == CaseSituation::HasNonFirstUppercase
+            if situation == CaseSituation::AllUppercase
+                && (self.keep_all_uppercase_words
+                    || self.capitalize_words_with_caps_inside)
+            {
+                res.extend(c.to_uppercase());
+                last_retain = true;
+            } else if force_cap
+                || (situation == CaseSituation::HasNonFirstUppercase
                     && self.capitalize_words_with_caps_inside)
-                    || (situation == CaseSituation::AllUppercase
-                        && (self.keep_all_uppercase_words
-                            || self.capitalize_words_with_caps_inside)))
                     && has_lowercase
             {
-                res.push_str(&c.to_uppercase().to_string());
+                res.extend(c.to_uppercase());
             } else if no_transform && self.do_not_format_after_dot && has_lowercase {
                 res.push(c);
             } else {
@@ -410,9 +413,9 @@ impl Case for SentenceCase {
                         .binary_search(&word.to_lowercase().as_str())
                         .is_ok()
                 {
-                    res.push_str(&c.to_uppercase().to_string());
+                    res.extend(c.to_uppercase());
                 } else {
-                    res.push_str(&c.to_lowercase().to_string());
+                    res.extend(c.to_lowercase());
                 }
             }
 
@@ -421,7 +424,11 @@ impl Case for SentenceCase {
 
         // Deplete iterator
         for c in iter {
-            res.push_str(&c.to_lowercase().to_string());
+            if last_retain {
+                res.push(c);
+            } else {
+                res.extend(c.to_lowercase());
+            }
         }
 
         res
@@ -590,6 +597,12 @@ mod tests {
             "Ubiquity Airmax is the next generation of networking hardware",
             title
         );
+
+        let props = SentenceCase {
+            keep_all_uppercase_words: false,
+            capitalize_words_with_caps_inside: false,
+            ..Default::default()
+        };
 
         let title =
             props.apply("SOME PEOPLE CAN NEVER STOP TO SCREAM. IT IS DRIVING ME CRAZY!");
